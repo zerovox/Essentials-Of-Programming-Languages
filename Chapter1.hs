@@ -23,7 +23,13 @@ removeFirst a (x:xs) 	| a == x = xs
 						| otherwise = x : removeFirst a xs
 
 ---Page 19:
+type Identifier = String
+data LcExpr = Ident Identifier | Lambda Identifier LcExpr | Call LcExpr LcExpr
 --TODO: occurs-free ???
+occursFree :: Identifier -> LcExpr -> Bool
+occursFree a (Ident b) 		= a == b
+occursFree a (Lambda y e) 	= (a /= y) && (occursFree a e)
+occursFree a (Call e1 e2)	= (occursFree a e1) || (occursFree a e2)
 
 ---Page 21:
 --The standard substitue for haskell lists looks like:
