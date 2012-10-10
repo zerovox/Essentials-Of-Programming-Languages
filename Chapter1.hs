@@ -1,9 +1,9 @@
 ----Chapter 1
 ---Page 2:
 inS :: Int -> Bool
-inS n 	| n == 0 = True
-		| n-3 < 0 = False
-		| otherwise = inS (n-3)
+inS n   | n == 0 = True
+        | n-3 < 0 = False
+        | otherwise = inS (n-3)
 
 ---Page 13
 listLength :: [a] -> Int
@@ -13,38 +13,38 @@ listLength (x:xs) = 1 + listLength xs
 ---Page 15:
 nthElement ::  [a] -> Int -> a
 nthElement [] _ = error "empty list"
-nthElement (x:xs) a 	| a == 0 = x
-						| otherwise = nthElement xs (a-1)
+nthElement (x:xs) a     | a == 0 = x
+                        | otherwise = nthElement xs (a-1)
 
 ---Page 17:
 removeFirst :: Eq a => a -> [a] -> [a]
-removeFirst _ [] 		= []
-removeFirst a (x:xs) 	| a == x = xs
-						| otherwise = x : removeFirst a xs
+removeFirst _ []        = []
+removeFirst a (x:xs)    | a == x = xs
+                        | otherwise = x : removeFirst a xs
 
 ---Page 19:
 type Identifier = String
 data LcExpr = Ident Identifier | Lambda Identifier LcExpr | Call LcExpr LcExpr
---TODO: occurs-free ???
+--TODO: is this correct?
 occursFree :: Identifier -> LcExpr -> Bool
-occursFree a (Ident b) 		= a == b
-occursFree a (Lambda y e) 	= (a /= y) && (occursFree a e)
-occursFree a (Call e1 e2)	= (occursFree a e1) || (occursFree a e2)
+occursFree a (Ident b)      = a == b
+occursFree a (Lambda y e)   = (a /= y) && (occursFree a e)
+occursFree a (Call e1 e2)   = (occursFree a e1) || (occursFree a e2)
 
 ---Page 21:
 --The standard substitue for haskell lists looks like:
 subst' :: Eq a =>  a -> a -> [a] -> [a]
 subst' _ _ []  = []
-subst' a b (x:xs) 	| a == x = b : (subst' a b xs)
-					| otherwise = x : (subst' a b xs)
+subst' a b (x:xs)   | a == x = b : (subst' a b xs)
+                    | otherwise = x : (subst' a b xs)
 --For sublists, we must define a type, then we can 'follow the grammar' by taking advantage of type pattern matching.
 type SList a = [SExp a]
 data SExp a = S a | Sublist (SList a)
 subst :: Eq a => a -> a -> SList a -> SList a
-subst _ _ [] 				= []
-subst a b ((Sublist x):xs) 	= Sublist (subst a b x) : (subst a b xs)
-subst a b ((S x):xs)		| x == a 	= S b : (subst a b xs)
-							| otherwise	= S x : (subst a b xs)
+subst _ _ []                = []
+subst a b ((Sublist x):xs)  = Sublist (subst a b x) : (subst a b xs)
+subst a b ((S x):xs)        | x == a    = S b : (subst a b xs)
+                            | otherwise = S x : (subst a b xs)
 
 ---Page 23:
 numberElementsFrom :: Int -> [a] -> [(Int, a)]
