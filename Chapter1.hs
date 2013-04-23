@@ -1,3 +1,5 @@
+module Chapter1 () where
+
 ----Chapter 1
 ---Page 2:
 inS :: Int -> Bool
@@ -24,12 +26,12 @@ removeFirst a (x:xs)    | a == x = xs
 
 ---Page 19:
 type Identifier = String
-data LcExpr = Ident Identifier | Lambda Identifier LcExpr | Call LcExpr LcExpr
+data LcExpr = Ident Identifier | Lambda Identifier LcExpr | App LcExpr LcExpr
 --TODO: is this correct?
 occursFree :: Identifier -> LcExpr -> Bool
 occursFree a (Ident b)      = a == b
 occursFree a (Lambda y e)   = (a /= y) && (occursFree a e)
-occursFree a (Call e1 e2)   = (occursFree a e1) || (occursFree a e2)
+occursFree a (App e1 e2)   = (occursFree a e1) || (occursFree a e2)
 
 ---Page 21:
 --The standard substitue for haskell lists looks like:
