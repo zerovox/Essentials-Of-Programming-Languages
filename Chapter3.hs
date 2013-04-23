@@ -32,10 +32,8 @@ module Chapter3 () where
 	eval (If tst thn els) env 				= if (boolVal $ eval tst env) then eval thn env else eval els env
 	eval (Var v) env						= applyEnv env v
 	eval (Let a exp1 exp2) env				= eval exp2 (extendEnv a (eval exp1 env) env)
-	eval (App a b) env 	= eval body (extendEnv var c env)
-		where 
-			c							= eval b env
-			(Procedure (P var body)) 	= eval a env
+	eval (App a b) env 						= eval body (extendEnv var (eval b env) env)
+		where (P var body) = procVal $ eval a env
 	eval (Proc a) env 						= Procedure a
 	eval (LetRec a exp1 exp2) env 			= eval exp2 env'
 		where env' = (extendEnv a (eval exp1 env') env)
